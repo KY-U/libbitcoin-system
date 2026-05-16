@@ -55,6 +55,15 @@ public:
     /// Connect tx.input[*].script to tx.input[*].prevout.script.
     static code connect(const chain::context& state,
         const chain::transaction& tx, const input_iterator& it) NOEXCEPT;
+    
+    /// Connect overloads that allows for a custom script checker to be passed in.
+    static code connect(const chain::context& state,
+        const chain::transaction& tx, uint32_t index,
+        const script_checker& checker) NOEXCEPT;
+
+    static code connect(const chain::context& state,
+        const chain::transaction& tx, const input_iterator& it,
+        const script_checker& checker) NOEXCEPT;
 
 protected:
     using flags = chain::flags;
@@ -70,9 +79,10 @@ protected:
     /// Witnessed script handler.
     static code connect_witness(const chain::context& state,
         const chain::transaction& tx, const input_iterator& it,
-        const chain::script& prevout, bool embedded) NOEXCEPT;
+        const chain::script& prevout, bool embedded,
+        const script_checker& checker) NOEXCEPT;
 
-    /// Operation disatch.
+    /// Operation dispatch.
     virtual op_error_t run_op(const op_iterator& op) NOEXCEPT;
 
     /// Operation handlers.
