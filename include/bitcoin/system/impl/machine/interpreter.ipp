@@ -1089,8 +1089,8 @@ op_check_multisig() NOEXCEPT
 
     // BIP66: if DER encoding invalid, script MUST fail and end.
     const auto bip66 = state::is_enabled(flags::bip66_rule);
-    if (bip66 && ec == error::op_check_multisig_parse_signature)
-        return ec;
+    if (bip66 && ec == error::op_check_sig_parse_signature)
+        return error::op_check_multisig_parse_signature;
 
     state::push_bool(ec == error::op_success);
     return error::op_success;
