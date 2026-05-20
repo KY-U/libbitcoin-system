@@ -1092,6 +1092,16 @@ op_check_multisig() NOEXCEPT
     if (bip66 && ec == error::op_check_sig_parse_signature)
         return error::op_check_multisig_parse_signature;
 
+    // Semantic(soft) errors should push false into stack, but not fail script execution.
+    const auto soft = ec == error::op_success ||
+        ec == error::op_check_sig_parse_signature ||
+        ec == error::op_check_multisig_verify10 ||
+        ec == error::op_check_multisig_verify11;
+    
+    // Structural(hard) errors fail script execution.
+    if (!soft)
+        return ec;
+
     state::push_bool(ec == error::op_success);
     return error::op_success;
 }
