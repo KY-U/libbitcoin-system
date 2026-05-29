@@ -36,7 +36,7 @@ namespace machine {
 // ----------------------------------------------------------------------------
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_unevaluated(opcode code) const NOEXCEPT
 {
     return operation::is_invalid(code) ? error::op_invalid :
@@ -47,7 +47,7 @@ op_unevaluated(opcode code) const NOEXCEPT
 // TODO: cats_rule should be enabled in test cases and default config.
 // Codes op_nop1..op_nop10 promoted from reserved by [0.3.6] hard fork.
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_nop(opcode) const NOEXCEPT
 {
     if (state::is_enabled(flags::nops_rule))
@@ -58,7 +58,7 @@ op_nop(opcode) const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_push_number(int8_t value) NOEXCEPT
 {
     state::push_signed64(value);
@@ -66,7 +66,7 @@ op_push_number(int8_t value) NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_push_size(const operation& op) NOEXCEPT
 {
     if (op.is_underclaimed())
@@ -77,7 +77,7 @@ op_push_size(const operation& op) NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_push_one_size(const operation& op) NOEXCEPT
 {
     if (op.is_underclaimed())
@@ -88,7 +88,7 @@ op_push_one_size(const operation& op) NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_push_two_size(const operation& op) NOEXCEPT
 {
     if (op.is_underclaimed())
@@ -99,7 +99,7 @@ op_push_two_size(const operation& op) NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_push_four_size(const operation& op) NOEXCEPT
 {
     if (op.is_underclaimed())
@@ -110,7 +110,7 @@ op_push_four_size(const operation& op) NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_nop() const NOEXCEPT
 {
     return error::op_success;
@@ -118,7 +118,7 @@ op_nop() const NOEXCEPT
 
 // This opcode pushed the version to the stack, a hard fork per release.
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_ver() const NOEXCEPT
 {
     if (state::is_enabled(flags::nops_rule))
@@ -128,7 +128,7 @@ op_ver() const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_if() NOEXCEPT
 {
     auto value = false;
@@ -147,7 +147,7 @@ op_if() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_notif() NOEXCEPT
 {
     auto value = false;
@@ -166,7 +166,7 @@ op_notif() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_verif() const NOEXCEPT
 {
     if (state::is_enabled(flags::nops_rule))
@@ -176,7 +176,7 @@ op_verif() const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_vernotif() const NOEXCEPT
 {
     if (state::is_enabled(flags::nops_rule))
@@ -186,7 +186,7 @@ op_vernotif() const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_else() NOEXCEPT
 {
     if (state::is_balanced())
@@ -197,7 +197,7 @@ op_else() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_endif() NOEXCEPT
 {
     if (state::is_balanced())
@@ -208,7 +208,7 @@ op_endif() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_verify() NOEXCEPT
 {
     if (state::is_stack_empty())
@@ -222,7 +222,7 @@ op_verify() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_return() const NOEXCEPT
 {
     if (state::is_enabled(flags::nops_rule))
@@ -232,7 +232,7 @@ op_return() const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_to_alt_stack() NOEXCEPT
 {
     if (state::is_stack_empty())
@@ -243,7 +243,7 @@ op_to_alt_stack() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_from_alt_stack() NOEXCEPT
 {
     if (state::is_alternate_empty())
@@ -254,7 +254,7 @@ op_from_alt_stack() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_drop2() NOEXCEPT
 {
     if (state::stack_size() < 2u)
@@ -267,7 +267,7 @@ op_drop2() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_dup2() NOEXCEPT
 {
     if (state::stack_size() < 2u)
@@ -280,7 +280,7 @@ op_dup2() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_dup3() NOEXCEPT
 {
     if (state::stack_size() < 3u)
@@ -294,7 +294,7 @@ op_dup3() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_over2() NOEXCEPT
 {
     if (state::stack_size() < 4u)
@@ -307,7 +307,7 @@ op_over2() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_rot2() NOEXCEPT
 {
     if (state::stack_size() < 6u)
@@ -323,7 +323,7 @@ op_rot2() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_swap2() NOEXCEPT
 {
     if (state::stack_size() < 4u)
@@ -336,7 +336,7 @@ op_swap2() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_if_dup() NOEXCEPT
 {
     if (state::is_stack_empty())
@@ -350,7 +350,7 @@ op_if_dup() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_depth() NOEXCEPT
 {
     // [0,1,2] => 3,[0,1,2]
@@ -359,7 +359,7 @@ op_depth() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_drop() NOEXCEPT
 {
     if (state::is_stack_empty())
@@ -371,7 +371,7 @@ op_drop() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_dup() NOEXCEPT
 {
     if (state::is_stack_empty())
@@ -383,7 +383,7 @@ op_dup() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_nip() NOEXCEPT
 {
     if (state::stack_size() < 2u)
@@ -396,7 +396,7 @@ op_nip() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_over() NOEXCEPT
 {
     if (state::stack_size() < 2u)
@@ -408,7 +408,7 @@ op_over() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_pick() NOEXCEPT
 {
     size_t index;
@@ -434,7 +434,7 @@ op_pick() NOEXCEPT
 // This remains in the current satoshi implementation (std_vector).
 // ****************************************************************************
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_roll() NOEXCEPT
 {
     size_t index;
@@ -456,7 +456,7 @@ op_roll() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_rot() NOEXCEPT
 {
     if (state::stack_size() < 3u)
@@ -469,7 +469,7 @@ op_rot() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_swap() NOEXCEPT
 {
     if (state::stack_size() < 2u)
@@ -481,7 +481,7 @@ op_swap() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_tuck() NOEXCEPT
 {
     if (state::stack_size() < 2u)
@@ -494,7 +494,7 @@ op_tuck() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_cat() const NOEXCEPT
 {
     if (state::is_enabled(flags::cats_rule))
@@ -504,7 +504,7 @@ op_cat() const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_substr() const NOEXCEPT
 {
     if (state::is_enabled(flags::cats_rule))
@@ -514,7 +514,7 @@ op_substr() const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_left() const NOEXCEPT
 {
     if (state::is_enabled(flags::cats_rule))
@@ -524,7 +524,7 @@ op_left() const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_right() const NOEXCEPT
 {
     if (state::is_enabled(flags::cats_rule))
@@ -534,7 +534,7 @@ op_right() const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_size() NOEXCEPT
 {
     if (state::is_stack_empty())
@@ -545,7 +545,7 @@ op_size() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_invert() const NOEXCEPT
 {
     if (state::is_enabled(flags::cats_rule))
@@ -555,7 +555,7 @@ op_invert() const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_and() const NOEXCEPT
 {
     if (state::is_enabled(flags::cats_rule))
@@ -565,7 +565,7 @@ op_and() const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_or() const NOEXCEPT
 {
     if (state::is_enabled(flags::cats_rule))
@@ -575,7 +575,7 @@ op_or() const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_xor() const NOEXCEPT
 {
     if (state::is_enabled(flags::cats_rule))
@@ -585,7 +585,7 @@ op_xor() const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_equal() NOEXCEPT
 {
     if (state::stack_size() < 2u)
@@ -596,7 +596,7 @@ op_equal() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_equal_verify() NOEXCEPT
 {
     if (state::stack_size() < 2u)
@@ -607,7 +607,7 @@ op_equal_verify() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_add1() NOEXCEPT
 {
     int32_t number;
@@ -619,7 +619,7 @@ op_add1() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_sub1() NOEXCEPT
 {
     int32_t number;
@@ -631,7 +631,7 @@ op_sub1() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_mul2() const NOEXCEPT
 {
     if (state::is_enabled(flags::cats_rule))
@@ -641,7 +641,7 @@ op_mul2() const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_div2() const NOEXCEPT
 {
     if (state::is_enabled(flags::cats_rule))
@@ -651,7 +651,7 @@ op_div2() const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_negate() NOEXCEPT
 {
     int32_t number;
@@ -664,7 +664,7 @@ op_negate() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_abs() NOEXCEPT
 {
     int32_t number;
@@ -677,7 +677,7 @@ op_abs() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_not() NOEXCEPT
 {
     int32_t number;
@@ -690,7 +690,7 @@ op_not() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_nonzero() NOEXCEPT
 {
     int32_t number;
@@ -702,7 +702,7 @@ op_nonzero() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_add() NOEXCEPT
 {
     int32_t right, left;
@@ -715,7 +715,7 @@ op_add() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_sub() NOEXCEPT
 {
     int32_t right, left;
@@ -728,7 +728,7 @@ op_sub() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_mul() const NOEXCEPT
 {
     if (state::is_enabled(flags::cats_rule))
@@ -738,7 +738,7 @@ op_mul() const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_div() const NOEXCEPT
 {
     if (state::is_enabled(flags::cats_rule))
@@ -748,7 +748,7 @@ op_div() const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_mod() const NOEXCEPT
 {
     if (state::is_enabled(flags::cats_rule))
@@ -758,7 +758,7 @@ op_mod() const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_lshift() const NOEXCEPT
 {
     if (state::is_enabled(flags::cats_rule))
@@ -768,7 +768,7 @@ op_lshift() const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_rshift() const NOEXCEPT
 {
     if (state::is_enabled(flags::cats_rule))
@@ -778,7 +778,7 @@ op_rshift() const NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_bool_and() NOEXCEPT
 {
     int32_t right, left;
@@ -790,7 +790,7 @@ op_bool_and() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_bool_or() NOEXCEPT
 {
     int32_t right, left;
@@ -802,7 +802,7 @@ op_bool_or() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_num_equal() NOEXCEPT
 {
     int32_t right, left;
@@ -814,7 +814,7 @@ op_num_equal() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_num_equal_verify() NOEXCEPT
 {
     int32_t right, left;
@@ -826,7 +826,7 @@ op_num_equal_verify() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_num_not_equal() NOEXCEPT
 {
     int32_t right, left;
@@ -838,7 +838,7 @@ op_num_not_equal() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_less_than() NOEXCEPT
 {
     int32_t right, left;
@@ -850,7 +850,7 @@ op_less_than() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_greater_than() NOEXCEPT
 {
     int32_t right, left;
@@ -862,7 +862,7 @@ op_greater_than() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_less_than_or_equal() NOEXCEPT
 {
     int32_t right, left;
@@ -874,7 +874,7 @@ op_less_than_or_equal() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_greater_than_or_equal() NOEXCEPT
 {
     int32_t right, left;
@@ -886,7 +886,7 @@ op_greater_than_or_equal() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_min() NOEXCEPT
 {
     int32_t right, left;
@@ -898,7 +898,7 @@ op_min() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_max() NOEXCEPT
 {
     int32_t right, left;
@@ -910,7 +910,7 @@ op_max() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_within() NOEXCEPT
 {
     int32_t upper, lower, value;
@@ -922,7 +922,7 @@ op_within() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_ripemd160() NOEXCEPT
 {
     if (state::is_stack_empty())
@@ -933,7 +933,7 @@ op_ripemd160() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_sha1() NOEXCEPT
 {
     if (state::is_stack_empty())
@@ -944,7 +944,7 @@ op_sha1() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_sha256() NOEXCEPT
 {
     if (state::is_stack_empty())
@@ -955,7 +955,7 @@ op_sha256() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_hash160() NOEXCEPT
 {
     if (state::is_stack_empty())
@@ -966,7 +966,7 @@ op_hash160() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_hash256() NOEXCEPT
 {
     if (state::is_stack_empty())
@@ -977,7 +977,7 @@ op_hash256() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_codeseparator(const op_iterator& op) NOEXCEPT
 {
     // Not thread safe for the script (changes script object metadata).
@@ -986,10 +986,12 @@ op_codeseparator(const op_iterator& op) NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_check_sig() NOEXCEPT
 {
     const auto ec = op_check_sig_verify();
+    if (ec == error::op_check_sig_low_stack)
+        return ec;
 
     // BIP66: if DER encoding invalid script MUST fail and end.
     const auto bip66 = state::is_enabled(flags::bip66_rule);
@@ -1011,23 +1013,23 @@ op_check_sig() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_check_sig_verify() NOEXCEPT
 {
     if (state::stack_size() < 2u)
-        return error::op_check_sig_verify1;
+        return error::op_check_sig_low_stack;
 
     const auto key = state::pop_chunk_();
     const auto endorsement = state::pop_chunk_();
 
-    if (key->empty())
-        return error::op_check_sig_empty_key;
-
     // BIP342:
     if (state::is_enabled(flags::bip342_rule))
     {
+        if (key->empty())
+            return error::op_check_sig_empty_key;
+
         if (endorsement->empty())
-            return error::op_check_sig_verify2;
+            return error::op_check_sig_verify1;
 
         // If public key is 32 bytes it is a bip340 schnorr key.
         // If signature is not empty, it is validated against public key.
@@ -1045,12 +1047,14 @@ op_check_sig_verify() NOEXCEPT
                 return error::op_check_sig_schnorr2;
 
             // Verify schnorr signature against public key and signature hash.
-            if (!schnorr::verify_signature(*key, hash, sig))
+            if (!state::checker().verify_schnorr_signature(*key, hash, sig))
                 return error::op_check_sig_schnorr3;
-        }
 
-        if (!state::sigops_increment())
-            return error::op_check_sig_budget;
+            if (!state::sigops_increment())
+                return error::op_check_sig_budget;
+
+            return error::op_success;
+        }
 
         // If public key size is neither 0 nor 32 bytes, it is an unknown type.
         // During script execution of signature opcodes these behave exactly as
@@ -1059,14 +1063,16 @@ op_check_sig_verify() NOEXCEPT
     }
 
     if (endorsement->empty())
-        return error::op_check_sig_verify3;
+        return error::op_check_sig_verify2;
 
     // Split endorsement into DER signature and signature hash flags.
     uint8_t sighash_flags;
-    const auto& der = state::ecdsa_split(sighash_flags, *endorsement);
-    const auto bip66 = state::is_enabled(flags::bip66_rule);
+    data_slice der{};
+    if (!state::ecdsa_split(der, sighash_flags, *endorsement))
+        return error::op_checksig_verify3;
 
     // BIP66: if DER encoding invalid script MUST fail and end.
+    const auto bip66 = state::is_enabled(flags::bip66_rule);
     ec_signature sig;
     if (!ecdsa::parse_signature(sig, der, bip66))
         return error::op_check_sig_parse_signature;
@@ -1075,24 +1081,34 @@ op_check_sig_verify() NOEXCEPT
     hash_digest hash{};
     const auto subscript = state::subscript(endorsement);
     if (!state::signature_hash(hash, *subscript, sighash_flags))
-        return error::op_check_sig_verify4;
+        return error::op_check_sig_verify3;
 
     // Verify ECDSA signature against public key and signature hash.
-    if (!ecdsa::verify_signature(*key, hash, sig))
-        return error::op_check_sig_verify5;
+    if (!state::checker().verify_ecdsa_signature(*key, hash, sig))
+        return error::op_check_sig_verify4;
 
     // TODO: use sighash and key to generate signature in sign mode.
     return error::op_success;
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_check_multisig() NOEXCEPT
 {
     if (state::is_enabled(flags::bip342_rule))
         return op_unevaluated(opcode::checkmultisig);
 
     const auto ec = op_check_multisig_verify();
+    if (ec == error::op_check_multisig_verify1 ||
+        ec == error::op_check_multisig_verify2 ||
+        ec == error::op_check_multisig_verify3 ||
+        ec == error::op_check_multisig_verify4 ||
+        ec == error::op_check_multisig_verify5 ||
+        ec == error::op_check_multisig_verify6 ||
+        ec == error::op_check_multisig_verify7 ||
+        ec == error::op_check_multisig_verify8 ||
+        ec == error::op_check_multisig_verify9)
+        return ec;
 
     // BIP66: if DER encoding invalid, script MUST fail and end.
     const auto bip66 = state::is_enabled(flags::bip66_rule);
@@ -1104,7 +1120,7 @@ op_check_multisig() NOEXCEPT
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_check_multisig_verify() NOEXCEPT
 {
     if (state::is_enabled(flags::bip342_rule))
@@ -1137,12 +1153,8 @@ op_check_multisig_verify() NOEXCEPT
     if (state::is_stack_empty())
         return error::op_check_multisig_verify8;
 
-    //*************************************************************************
-    // CONSENSUS: Satoshi bug, discard stack element, malleable until bip147.
-    //*************************************************************************
+    // BIP147: Satoshi bug, discard stack element, malleable until active.
     const auto bip147 = state::is_enabled(flags::bip147_rule);
-
-    // This check is unique in that a chunk must be empty to be false.
     if (state::pop_strict_bool_() && bip147)
         return error::op_check_multisig_verify9;
 
@@ -1175,32 +1187,28 @@ op_check_multisig_verify() NOEXCEPT
         // Signature hash caching (bypass signature hash if same as previous).
         if (state::uncached(sighash_flags))
             if (!state::set_hash(*subscript, sighash_flags))
-                return error::op_check_multisig_verify10;
+                continue;
 
         // Verify ECDSA signature against public key and cache signature hash.
-        if (ecdsa::verify_signature(*key, state::cached_hash(), sig))
+        if (state::checker().verify_ecdsa_signature(*key, state::cached_hash(), sig))
             ++it;
     }
 
     // All endorsements must be verified against a key.
     if (it != endorsements.end())
-        return error::op_check_multisig_verify11;
+        return error::op_check_multisig_mismatch;
 
     // TODO: use sighash and key to generate signature in sign mode.
     return error::op_success;
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_check_locktime_verify() const NOEXCEPT
 {
     // BIP65: nop2 subsumed by checklocktimeverify when bip65 fork is active.
     if (!state::is_enabled(flags::bip65_rule))
         return op_nop(opcode::nop2);
-
-    // The tx sequence is 0xffffffff.
-    if (state::input().is_final())
-        return error::op_check_locktime_verify1;
 
     // The stack is empty.
     // The top stack item is negative.
@@ -1211,23 +1219,16 @@ op_check_locktime_verify() const NOEXCEPT
         return error::op_check_locktime_verify2;
 
     const auto trans_locktime32 = state::tx().locktime();
-    using namespace chain;
 
-    // The stack locktime type differs from that of tx.
-    if ((stack_locktime40 < locktime_threshold) !=
-        (trans_locktime32 < locktime_threshold))
-        return error::op_check_locktime_verify3;
-
-    // The stack locktime is greater than the tx locktime.
-    if (stack_locktime40 > trans_locktime32)
-        return error::op_check_locktime_verify4;
-
-    // TODO: use sighash and key to generate signature in sign mode?
-    return error::op_success;
+    return state::checker().verify_locktime(
+        state::input().is_final(),
+        stack_locktime40,
+        trans_locktime32
+    );
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_check_sequence_verify() const NOEXCEPT
 {
     // BIP112: nop3 subsumed by checksequenceverify when bip112 fork is active.
@@ -1244,35 +1245,20 @@ op_check_sequence_verify() const NOEXCEPT
 
     // Only 32 bits are tested.
     const auto input_sequence32 = state::input().sequence();
-    using namespace chain;
 
     // The stack sequence is disabled, treat as nop3.
-    if (get_right(stack_sequence32, relative_locktime_disabled_bit))
+    if (get_right(stack_sequence32, chain::relative_locktime_disabled_bit))
         return op_nop(opcode::nop3);
 
-    // The stack sequence is enabled and tx version less than 2.
-    if (state::tx().version() < relative_locktime_min_version)
-        return error::op_check_sequence_verify2;
-
-    // The transaction sequence is disabled.
-    if (get_right(input_sequence32, relative_locktime_disabled_bit))
-        return error::op_check_sequence_verify3;
-
-    // The stack sequence type differs from that of tx input.
-    if (get_right(stack_sequence32, relative_locktime_time_locked_bit) !=
-        get_right(input_sequence32, relative_locktime_time_locked_bit))
-        return error::op_check_sequence_verify4;
-
-    // The unmasked stack sequence is greater than that of tx sequence.
-    if (mask_left(stack_sequence32, relative_locktime_mask_left) >
-        mask_left(input_sequence32, relative_locktime_mask_left))
-        return error::op_check_sequence_verify5;
-
-    return error::op_success;
+    return state::checker().verify_sequence(
+        state::tx().version(),
+        stack_sequence32,
+        input_sequence32
+    );
 }
 
 TEMPLATE
-inline error::op_error_t CLASS::
+error::op_error_t CLASS::
 op_check_sig_add() NOEXCEPT
 {
     // BIP342: reserved_186 subsumed by op_checksigadd when tapscript active.
@@ -1318,7 +1304,7 @@ op_check_sig_add() NOEXCEPT
         return error::op_check_sig_add5;
 
     // Verify schnorr signature against public key and signature hash.
-    if (!schnorr::verify_signature(*key, hash, sig))
+    if (!state::checker().verify_schnorr_signature(*key, hash, sig))
         return error::op_check_sig_add6;
 
     // If signature not empty, opcode counted toward sigops budget.

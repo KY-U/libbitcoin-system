@@ -34,7 +34,7 @@ doc_DATA = \
 lib_LTLIBRARIES = src/libbitcoin-system.la
 src_libbitcoin_system_la_CPPFLAGS = -I${srcdir}/include ${boost_BUILD_CPPFLAGS} ${secp256k1_BUILD_CPPFLAGS}
 src_libbitcoin_system_la_LDFLAGS = ${boost_LDFLAGS}
-src_libbitcoin_system_la_LIBADD = ${boost_iostreams_LIBS} ${boost_locale_LIBS} ${boost_program_options_LIBS} ${boost_thread_LIBS} ${boost_url_LIBS} ${secp256k1_LIBS}
+src_libbitcoin_system_la_LIBADD = ${boost_container_LIBS} ${boost_iostreams_LIBS} ${boost_json_LIBS} ${boost_locale_LIBS} ${boost_program_options_LIBS} ${boost_thread_LIBS} ${boost_url_LIBS} ${secp256k1_LIBS}
 src_libbitcoin_system_la_SOURCES = \
     src/arena.cpp \
     src/define.cpp \
@@ -71,6 +71,8 @@ src_libbitcoin_system_la_SOURCES = \
     src/chain/json/script.cpp \
     src/chain/json/transaction.cpp \
     src/chain/json/witness.cpp \
+    src/chain/views/block_view.cpp \
+    src/chain/views/transaction_view.cpp \
     src/config/authority.cpp \
     src/config/base16.cpp \
     src/config/base2.cpp \
@@ -207,7 +209,7 @@ if WITH_EXAMPLES
 noinst_PROGRAMS = examples/libbitcoin-system-examples
 examples_libbitcoin_system_examples_CPPFLAGS = -I${srcdir}/include ${boost_BUILD_CPPFLAGS} ${secp256k1_BUILD_CPPFLAGS}
 examples_libbitcoin_system_examples_LDFLAGS = ${boost_LDFLAGS}
-examples_libbitcoin_system_examples_LDADD = src/libbitcoin-system.la ${boost_iostreams_LIBS} ${boost_locale_LIBS} ${boost_program_options_LIBS} ${boost_thread_LIBS} ${boost_url_LIBS} ${secp256k1_LIBS}
+examples_libbitcoin_system_examples_LDADD = src/libbitcoin-system.la ${boost_container_LIBS} ${boost_iostreams_LIBS} ${boost_json_LIBS} ${boost_locale_LIBS} ${boost_program_options_LIBS} ${boost_thread_LIBS} ${boost_url_LIBS} ${secp256k1_LIBS}
 examples_libbitcoin_system_examples_SOURCES = \
     examples/main.cpp
 
@@ -222,7 +224,7 @@ TESTS = libbitcoin-system-test_runner.sh
 check_PROGRAMS = test/libbitcoin-system-test
 test_libbitcoin_system_test_CPPFLAGS = -I${srcdir}/include ${boost_BUILD_CPPFLAGS} ${secp256k1_BUILD_CPPFLAGS}
 test_libbitcoin_system_test_LDFLAGS = ${boost_LDFLAGS}
-test_libbitcoin_system_test_LDADD = src/libbitcoin-system.la ${boost_unit_test_framework_LIBS} ${boost_iostreams_LIBS} ${boost_locale_LIBS} ${boost_program_options_LIBS} ${boost_thread_LIBS} ${boost_url_LIBS} ${secp256k1_LIBS}
+test_libbitcoin_system_test_LDADD = src/libbitcoin-system.la ${boost_unit_test_framework_LIBS} ${boost_container_LIBS} ${boost_iostreams_LIBS} ${boost_json_LIBS} ${boost_locale_LIBS} ${boost_program_options_LIBS} ${boost_thread_LIBS} ${boost_url_LIBS} ${secp256k1_LIBS}
 test_libbitcoin_system_test_SOURCES = \
     test/allocator.cpp \
     test/arena.cpp \
@@ -271,6 +273,8 @@ test_libbitcoin_system_test_SOURCES = \
     test/chain/json/script.cpp \
     test/chain/json/transaction.cpp \
     test/chain/json/witness.cpp \
+    test/chain/views/block_view.cpp \
+    test/chain/views/transaction_view.cpp \
     test/config/authority.cpp \
     test/config/base16.cpp \
     test/config/base2.cpp \
@@ -380,6 +384,8 @@ test_libbitcoin_system_test_SOURCES = \
     test/math/power.cpp \
     test/math/rotate.cpp \
     test/math/sign.cpp \
+    test/mocks/blocks.cpp \
+    test/mocks/blocks.hpp \
     test/radix/base_10.cpp \
     test/radix/base_16.cpp \
     test/radix/base_2048.cpp \
@@ -423,8 +429,6 @@ test_libbitcoin_system_test_SOURCES = \
     test/unicode/utf8_everywhere/paths.cpp \
     test/unicode/utf8_everywhere/unicode_istream.cpp \
     test/unicode/utf8_everywhere/unicode_ostream.cpp \
-    test/utreexo/utreexo.cpp \
-    test/utreexo/utreexo.hpp \
     test/wallet/context.cpp \
     test/wallet/message.cpp \
     test/wallet/neutrino.cpp \
@@ -551,6 +555,11 @@ include_bitcoin_system_chain_json_HEADERS = \
     include/bitcoin/system/chain/json/script.hpp \
     include/bitcoin/system/chain/json/transaction.hpp \
     include/bitcoin/system/chain/json/witness.hpp
+
+include_bitcoin_system_chain_viewsdir = ${includedir}/bitcoin/system/chain/views
+include_bitcoin_system_chain_views_HEADERS = \
+    include/bitcoin/system/chain/views/block_view.hpp \
+    include/bitcoin/system/chain/views/transaction_view.hpp
 
 include_bitcoin_system_configdir = ${includedir}/bitcoin/system/config
 include_bitcoin_system_config_HEADERS = \

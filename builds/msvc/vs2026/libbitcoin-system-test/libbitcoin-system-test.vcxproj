@@ -195,6 +195,8 @@
     <ClCompile Include="..\..\..\..\test\chain\transaction.cpp">
       <ObjectFileName>$(IntDir)test_chain_transaction.obj</ObjectFileName>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\test\chain\views\block_view.cpp" />
+    <ClCompile Include="..\..\..\..\test\chain\views\transaction_view.cpp" />
     <ClCompile Include="..\..\..\..\test\chain\witness.cpp">
       <ObjectFileName>$(IntDir)test_chain_witness.obj</ObjectFileName>
     </ClCompile>
@@ -336,6 +338,9 @@
       <ObjectFileName>$(IntDir)test_math_rotate.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\..\..\..\test\math\sign.cpp" />
+    <ClCompile Include="..\..\..\..\test\mocks\blocks.cpp">
+      <ObjectFileName>$(IntDir)test_mocks_blocks.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\test\radix\base_10.cpp" />
     <ClCompile Include="..\..\..\..\test\radix\base_16.cpp" />
     <ClCompile Include="..\..\..\..\test\radix\base_2048.cpp" />
@@ -389,9 +394,6 @@
     <ClCompile Include="..\..\..\..\test\unicode\utf8_everywhere\paths.cpp" />
     <ClCompile Include="..\..\..\..\test\unicode\utf8_everywhere\unicode_istream.cpp" />
     <ClCompile Include="..\..\..\..\test\unicode\utf8_everywhere\unicode_ostream.cpp" />
-    <ClCompile Include="..\..\..\..\test\utreexo\utreexo.cpp">
-      <ObjectFileName>$(IntDir)test_utreexo_utreexo.obj</ObjectFileName>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\test\wallet\addresses\bitcoin_uri.cpp" />
     <ClCompile Include="..\..\..\..\test\wallet\addresses\checked.cpp" />
     <ClCompile Include="..\..\..\..\test\wallet\addresses\payment_address.cpp" />
@@ -457,8 +459,8 @@
     <ClInclude Include="..\..\..\..\test\hash\performance\baseline\sha256.h" />
     <ClInclude Include="..\..\..\..\test\hash\performance\performance.hpp" />
     <ClInclude Include="..\..\..\..\test\hash\siphash.hpp" />
+    <ClInclude Include="..\..\..\..\test\mocks\blocks.hpp" />
     <ClInclude Include="..\..\..\..\test\test.hpp" />
-    <ClInclude Include="..\..\..\..\test\utreexo\utreexo.hpp" />
     <ClInclude Include="..\..\..\..\test\wallet\mnemonics\electrum.hpp" />
     <ClInclude Include="..\..\..\..\test\wallet\mnemonics\electrum_v1.hpp" />
     <ClInclude Include="..\..\..\..\test\wallet\mnemonics\mnemonic.hpp" />
@@ -476,7 +478,9 @@
   <ImportGroup Label="ExtensionTargets" />
   <ImportGroup Label="ExtensionSettings">
     <Import Project="$(NuGetPackageRoot)libbitcoin-boost.1.91.0\build\libbitcoin-boost.targets" Condition="Exists('$(NuGetPackageRoot)libbitcoin-boost.1.91.0\build\libbitcoin-boost.targets')" />
+    <Import Project="$(NuGetPackageRoot)libbitcoin-boost_container-vc145.1.91.0\build\libbitcoin-boost_container-vc145.targets" Condition="Exists('$(NuGetPackageRoot)libbitcoin-boost_container-vc145.1.91.0\build\libbitcoin-boost_container-vc145.targets')" />
     <Import Project="$(NuGetPackageRoot)libbitcoin-boost_iostreams-vc145.1.91.0\build\libbitcoin-boost_iostreams-vc145.targets" Condition="Exists('$(NuGetPackageRoot)libbitcoin-boost_iostreams-vc145.1.91.0\build\libbitcoin-boost_iostreams-vc145.targets')" />
+    <Import Project="$(NuGetPackageRoot)libbitcoin-boost_json-vc145.1.91.0\build\libbitcoin-boost_json-vc145.targets" Condition="Exists('$(NuGetPackageRoot)libbitcoin-boost_json-vc145.1.91.0\build\libbitcoin-boost_json-vc145.targets')" />
     <Import Project="$(NuGetPackageRoot)libbitcoin-boost_locale-vc145.1.91.0\build\libbitcoin-boost_locale-vc145.targets" Condition="Exists('$(NuGetPackageRoot)libbitcoin-boost_locale-vc145.1.91.0\build\libbitcoin-boost_locale-vc145.targets')" />
     <Import Project="$(NuGetPackageRoot)libbitcoin-boost_program_options-vc145.1.91.0\build\libbitcoin-boost_program_options-vc145.targets" Condition="Exists('$(NuGetPackageRoot)libbitcoin-boost_program_options-vc145.1.91.0\build\libbitcoin-boost_program_options-vc145.targets')" />
     <Import Project="$(NuGetPackageRoot)libbitcoin-boost_thread-vc145.1.91.0\build\libbitcoin-boost_thread-vc145.targets" Condition="Exists('$(NuGetPackageRoot)libbitcoin-boost_thread-vc145.1.91.0\build\libbitcoin-boost_thread-vc145.targets')" />
@@ -489,7 +493,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(NuGetPackageRoot)libbitcoin-boost.1.91.0\build\libbitcoin-boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)libbitcoin-boost.1.91.0\build\libbitcoin-boost.targets'))" />
+    <Error Condition="!Exists('$(NuGetPackageRoot)libbitcoin-boost_container-vc145.1.91.0\build\libbitcoin-boost_container-vc145.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)libbitcoin-boost_container-vc145.1.91.0\build\libbitcoin-boost_container-vc145.targets'))" />
     <Error Condition="!Exists('$(NuGetPackageRoot)libbitcoin-boost_iostreams-vc145.1.91.0\build\libbitcoin-boost_iostreams-vc145.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)libbitcoin-boost_iostreams-vc145.1.91.0\build\libbitcoin-boost_iostreams-vc145.targets'))" />
+    <Error Condition="!Exists('$(NuGetPackageRoot)libbitcoin-boost_json-vc145.1.91.0\build\libbitcoin-boost_json-vc145.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)libbitcoin-boost_json-vc145.1.91.0\build\libbitcoin-boost_json-vc145.targets'))" />
     <Error Condition="!Exists('$(NuGetPackageRoot)libbitcoin-boost_locale-vc145.1.91.0\build\libbitcoin-boost_locale-vc145.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)libbitcoin-boost_locale-vc145.1.91.0\build\libbitcoin-boost_locale-vc145.targets'))" />
     <Error Condition="!Exists('$(NuGetPackageRoot)libbitcoin-boost_program_options-vc145.1.91.0\build\libbitcoin-boost_program_options-vc145.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)libbitcoin-boost_program_options-vc145.1.91.0\build\libbitcoin-boost_program_options-vc145.targets'))" />
     <Error Condition="!Exists('$(NuGetPackageRoot)libbitcoin-boost_thread-vc145.1.91.0\build\libbitcoin-boost_thread-vc145.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)libbitcoin-boost_thread-vc145.1.91.0\build\libbitcoin-boost_thread-vc145.targets'))" />

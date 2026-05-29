@@ -33,7 +33,7 @@ namespace machine {
 // ----------------------------------------------------------------------------
 
 TEMPLATE
-inline bool CLASS::
+bool CLASS::
 is_true(bool clean_stack) const NOEXCEPT
 {
     return (!clean_stack || is_stack_clean()) && !is_stack_empty() &&
@@ -41,7 +41,7 @@ is_true(bool clean_stack) const NOEXCEPT
 }
 
 TEMPLATE
-inline const data_chunk& CLASS::
+const data_chunk& CLASS::
 pop() NOEXCEPT
 {
     BC_ASSERT_MSG(!is_stack_empty(), "pop from empty stack");
@@ -125,6 +125,13 @@ INLINE bool CLASS::
 is_enabled(flags flag) const NOEXCEPT
 {
     return to_bool(flags_ & flag);
+}
+
+TEMPLATE
+INLINE const script_checker& CLASS::
+checker() const NOEXCEPT
+{
+    return checker_;
 }
 
 // Primary stack (conversions).

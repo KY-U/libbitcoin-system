@@ -41,6 +41,7 @@ namespace libbitcoin {
 namespace system {
 namespace chain {
 
+BC_PUSH_WARNING(NO_CONST_CAST)
 BC_PUSH_WARNING(NO_THROW_IN_NOEXCEPT)
 
 // Constructors.
@@ -102,17 +103,14 @@ transaction::transaction(reader&& source, bool witness) NOEXCEPT
 }
 
 transaction::transaction(reader& source, bool witness) NOEXCEPT
-  : version_(source.read_4_bytes_little_endian()),
-    inputs_(CREATE(input_cptrs, source.get_allocator())),
-    outputs_(CREATE(output_cptrs, source.get_allocator()))
+  : transaction(from_data(source, witness))
 {
-    assign_data(source, witness);
 }
 
 // protected
-transaction::transaction(uint32_t version,
-    const chain::inputs_cptr& inputs, const chain::outputs_cptr& outputs,
-    uint32_t locktime, bool segregated, bool valid) NOEXCEPT
+transaction::transaction(uint32_t version, const chain::inputs_cptr& inputs,
+    const chain::outputs_cptr& outputs, uint32_t locktime, bool segregated,
+    bool valid) NOEXCEPT
   : version_(version),
     inputs_(inputs ? inputs : to_shared<input_cptrs>()),
     outputs_(outputs ? outputs : to_shared<output_cptrs>()),
@@ -145,76 +143,77 @@ bool transaction::operator!=(const transaction& other) const NOEXCEPT
 // Deserialization.
 // ----------------------------------------------------------------------------
 
-// private
-BC_PUSH_WARNING(NO_UNGUARDED_POINTERS)
-void transaction::assign_data(reader& source, bool witness) NOEXCEPT
+template<class Put, class Source>
+std::shared_ptr<const std_vector<std::shared_ptr<const Put>>>
+read_puts(Source& source) NOEXCEPT
 {
-    auto& allocator = source.get_allocator();
-    auto ins = to_non_const_raw_ptr(inputs_);
-    auto count = source.read_size(max_block_size);
-    ins->reserve(count);
-    for (size_t in{}; in < count; ++in)
-        ins->emplace_back(CREATE(input, allocator, source));
+    auto puts = to_shared<std_vector<std::shared_ptr<const Put>>>();
+    const auto count = source.read_size(max_count);
+
+    puts->reserve(count);
+    for (auto put = zero; put < count; ++put)
+        puts->push_back(to_shared<Put>(source));
+
+    // This is a pointer copy (non-const to const).
+    return puts;
+}
+
+// static/private
+transaction transaction::from_data(reader& source, bool witness) NOEXCEPT
+{
+    const auto version = source.read_4_bytes_little_endian();
+
+    // Inputs must be non-const so that they may assign the witness.
+    auto inputs = read_puts<input>(source);
+    outputs_cptr outputs{};
 
     // Expensive repeated recomputation, so cache segregated state.
-    // Detect witness as no inputs (marker) and expected flag [bip144].
-    segregated_ = 
-        inputs_->size() == witness_marker &&
+    const auto has_witness =
+        inputs->size() == witness_marker &&
         source.peek_byte() == witness_enabled;
 
-    if (segregated_)
+    // Detect witness as no inputs (marker) and expected flag (bip144).
+    if (has_witness)
     {
         // Skip over the peeked witness flag.
         source.skip_byte();
 
-        count = source.read_size(max_block_size);
-        ins->reserve(count);
-        for (size_t in{}; in < count; ++in)
-            ins->emplace_back(CREATE(input, allocator, source));
-
-        auto outs = to_non_const_raw_ptr(outputs_);
-        count = source.read_size(max_block_size);
-        outs->reserve(count);
-        for (size_t out{}; out < count; ++out)
-            outs->emplace_back(CREATE(output, allocator, source));
+        // Inputs and outputs are constructed on a vector of const pointers.
+        inputs = read_puts<input>(source);
+        outputs = read_puts<output>(source);
 
         // Read or skip witnesses as specified.
-        if (witness)
+        auto superfluous{ true };
+        for (auto& input: *inputs)
         {
-            auto superfluous{ true };
-            for (auto& input: *inputs_)
-                if (to_non_const_raw_ptr(input)->set_witness(source))
+            if (witness)
+            {
+                // Safe to cast as this method exclusively owns the input.
+                if (const_cast<chain::input*>(input.get())->set_witness(source))
                     superfluous = false;
-
-            // Transaction is non-segregated if all witnesses are empty.
-            // Validatable, but treat superfluous as invalid serialization.
-            if (superfluous)
-                source.invalidate();
+            }
+            else
+            {
+                if (witness::skip(source, true))
+                    superfluous = false;
+            }
         }
-        else
-        {
-            // Transaction is read as non-segregated (witnesses skipped).
-            segregated_ = false;
 
-            // Default witness is populated on input construct.
-            for (size_t in{}; in < inputs_->size(); ++in)
-                witness::skip(source, true);
-        }
+        // Transaction is non-segregated if all witnesses are empty.
+        // Validatable, but treat superfluous as invalid serialization.
+        if (superfluous)
+            source.invalidate();
     }
     else
     {
-        auto outs = to_non_const_raw_ptr(outputs_);
-        count = source.read_size(max_block_size);
-        outs->reserve(count);
-        for (size_t out{}; out < count; ++out)
-            outs->emplace_back(CREATE(output, allocator, source));
+        // Default witness is populated on input construct.
+        outputs = read_puts<const output>(source);
     }
 
-    locktime_ = source.read_4_bytes_little_endian();
-    size_ = serialized_size(*inputs_, *outputs_, segregated_);
-    valid_ = source;
+    const auto segregated = has_witness && witness;
+    const auto locktime = source.read_4_bytes_little_endian();
+    return { version, inputs, outputs, locktime, segregated, source };
 }
-BC_POP_WARNING()
 
 // Serialization.
 // ----------------------------------------------------------------------------
@@ -969,6 +968,7 @@ code transaction::connect(const context& ctx) const NOEXCEPT
     return error::transaction_success;
 }
 
+BC_POP_WARNING()
 BC_POP_WARNING()
 
 } // namespace chain

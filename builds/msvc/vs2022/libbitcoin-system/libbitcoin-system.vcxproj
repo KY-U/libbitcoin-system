@@ -196,6 +196,8 @@
     <ClCompile Include="..\..\..\..\src\chain\transaction_sighash.cpp" />
     <ClCompile Include="..\..\..\..\src\chain\transaction_sighash_v0.cpp" />
     <ClCompile Include="..\..\..\..\src\chain\transaction_sighash_v1.cpp" />
+    <ClCompile Include="..\..\..\..\src\chain\views\block_view.cpp" />
+    <ClCompile Include="..\..\..\..\src\chain\views\transaction_view.cpp" />
     <ClCompile Include="..\..\..\..\src\chain\witness.cpp">
       <ObjectFileName>$(IntDir)src_chain_witness.obj</ObjectFileName>
     </ClCompile>
@@ -416,6 +418,8 @@
     <ClInclude Include="..\..\..\..\include\bitcoin\system\chain\taproot.hpp" />
     <ClInclude Include="..\..\..\..\include\bitcoin\system\chain\tapscript.hpp" />
     <ClInclude Include="..\..\..\..\include\bitcoin\system\chain\transaction.hpp" />
+    <ClInclude Include="..\..\..\..\include\bitcoin\system\chain\views\block_view.hpp" />
+    <ClInclude Include="..\..\..\..\include\bitcoin\system\chain\views\transaction_view.hpp" />
     <ClInclude Include="..\..\..\..\include\bitcoin\system\chain\witness.hpp" />
     <ClInclude Include="..\..\..\..\include\bitcoin\system\config\authority.hpp" />
     <ClInclude Include="..\..\..\..\include\bitcoin\system\config\base16.hpp" />
@@ -783,7 +787,9 @@
   <ImportGroup Label="ExtensionTargets" />
   <ImportGroup Label="ExtensionSettings">
     <Import Project="$(NuGetPackageRoot)boost.1.86.0\build\boost.targets" Condition="Exists('$(NuGetPackageRoot)boost.1.86.0\build\boost.targets')" />
+    <Import Project="$(NuGetPackageRoot)boost_container-vc143.1.86.0\build\boost_container-vc143.targets" Condition="Exists('$(NuGetPackageRoot)boost_container-vc143.1.86.0\build\boost_container-vc143.targets')" />
     <Import Project="$(NuGetPackageRoot)boost_iostreams-vc143.1.86.0\build\boost_iostreams-vc143.targets" Condition="Exists('$(NuGetPackageRoot)boost_iostreams-vc143.1.86.0\build\boost_iostreams-vc143.targets')" />
+    <Import Project="$(NuGetPackageRoot)boost_json-vc143.1.86.0\build\boost_json-vc143.targets" Condition="Exists('$(NuGetPackageRoot)boost_json-vc143.1.86.0\build\boost_json-vc143.targets')" />
     <Import Project="$(NuGetPackageRoot)boost_locale-vc143.1.86.0\build\boost_locale-vc143.targets" Condition="Exists('$(NuGetPackageRoot)boost_locale-vc143.1.86.0\build\boost_locale-vc143.targets')" />
     <Import Project="$(NuGetPackageRoot)boost_program_options-vc143.1.86.0\build\boost_program_options-vc143.targets" Condition="Exists('$(NuGetPackageRoot)boost_program_options-vc143.1.86.0\build\boost_program_options-vc143.targets')" />
     <Import Project="$(NuGetPackageRoot)boost_thread-vc143.1.86.0\build\boost_thread-vc143.targets" Condition="Exists('$(NuGetPackageRoot)boost_thread-vc143.1.86.0\build\boost_thread-vc143.targets')" />
@@ -795,7 +801,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(NuGetPackageRoot)boost.1.86.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)boost.1.86.0\build\boost.targets'))" />
+    <Error Condition="!Exists('$(NuGetPackageRoot)boost_container-vc143.1.86.0\build\boost_container-vc143.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)boost_container-vc143.1.86.0\build\boost_container-vc143.targets'))" />
     <Error Condition="!Exists('$(NuGetPackageRoot)boost_iostreams-vc143.1.86.0\build\boost_iostreams-vc143.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)boost_iostreams-vc143.1.86.0\build\boost_iostreams-vc143.targets'))" />
+    <Error Condition="!Exists('$(NuGetPackageRoot)boost_json-vc143.1.86.0\build\boost_json-vc143.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)boost_json-vc143.1.86.0\build\boost_json-vc143.targets'))" />
     <Error Condition="!Exists('$(NuGetPackageRoot)boost_locale-vc143.1.86.0\build\boost_locale-vc143.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)boost_locale-vc143.1.86.0\build\boost_locale-vc143.targets'))" />
     <Error Condition="!Exists('$(NuGetPackageRoot)boost_program_options-vc143.1.86.0\build\boost_program_options-vc143.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)boost_program_options-vc143.1.86.0\build\boost_program_options-vc143.targets'))" />
     <Error Condition="!Exists('$(NuGetPackageRoot)boost_thread-vc143.1.86.0\build\boost_thread-vc143.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)boost_thread-vc143.1.86.0\build\boost_thread-vc143.targets'))" />

@@ -42,6 +42,7 @@ public:
 
     typedef std::shared_ptr<const block> cptr;
 
+    static bool is_malleable32(size_t set, size_t width) NOEXCEPT;
     static bool is_malleable64(const transaction_cptrs& txs) NOEXCEPT;
     static hashes merkle_branch(size_t position, hashes&& leaves) NOEXCEPT;
     static uint64_t subsidy(size_t height, uint64_t subsidy_interval,
@@ -123,10 +124,6 @@ public:
     void set_state(const chain_state::cptr& state) const NOEXCEPT;
     const chain_state::cptr& get_state() const NOEXCEPT;
 
-    /// Set/get memory allocation.
-    void set_allocation(size_t allocation) const NOEXCEPT;
-    size_t get_allocation() const NOEXCEPT;
-
     /// Identity.
     /// -----------------------------------------------------------------------
 
@@ -158,15 +155,6 @@ protected:
     code check_with_malleated() const NOEXCEPT;
     size_t malleated32_size() const NOEXCEPT;
     bool is_malleated32(size_t width) const NOEXCEPT;
-    static constexpr bool is_malleable32(size_t set, size_t width) NOEXCEPT
-    {
-        // Malleable when set is odd at width depth and not before and not one.
-        // This is the only case in which Merkle clones the last item in a set.
-        for (auto depth = one; depth <= width; depth *= two, set = to_half(set))
-            if (is_odd(set)) return depth == width && !is_one(set);
-
-        return false;
-    }
 
     /// Check (context free).
     /// -----------------------------------------------------------------------
@@ -198,7 +186,6 @@ protected:
 private:
     typedef struct { size_t nominal; size_t witnessed; } sizes;
 
-    void assign_data(reader& source, bool witness) NOEXCEPT;
     static block from_data(reader& source, bool witness) NOEXCEPT;
     static sizes serialized_size(const transaction_cptrs& txs) NOEXCEPT;
 
@@ -226,7 +213,6 @@ private:
     // Cache.
     bool valid_;
     sizes size_;
-    mutable size_t allocation_{};
 };
 
 typedef std_vector<block> blocks;

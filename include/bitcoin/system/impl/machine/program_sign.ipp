@@ -98,14 +98,18 @@ schnorr_split(uint8_t& sighash_flags, const data_chunk& endorsement) NOEXCEPT
 
 // static
 TEMPLATE
-INLINE data_slice CLASS::
-ecdsa_split(uint8_t& sighash_flags, const data_chunk& endorsement) NOEXCEPT
+INLINE bool CLASS::
+ecdsa_split(uint8_t& sighash_flags, data_slice& der, const data_chunk& endorsement) NOEXCEPT
 {
-    BC_ASSERT(!endorsement.empty());
+    if (endorsement.empty())
+    {
+        return false;
+    }
     sighash_flags = endorsement.back();
 
     // data_slice is returned since the size of the DER encoding is not fixed.
-    return { endorsement.begin(), std::prev(endorsement.end()) };
+    der = { endorsement.begin(), std::prev(endorsement.end()) };
+    return true;
 }
 
 // Signature subscripting.

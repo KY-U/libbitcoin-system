@@ -628,6 +628,46 @@ BOOST_AUTO_TEST_CASE(script__multisig__invalid)
     }
 }
 
+BOOST_AUTO_TEST_CASE(script__multisig__bip66_invalid_der)
+{
+    for (const auto& test: invalid_bip66_multisig_scripts)
+    {
+        const auto tx = test_tx(test);
+        const auto name = test_name(test);
+
+        BOOST_REQUIRE_MESSAGE(tx.is_valid(), name);
+        BOOST_CHECK_MESSAGE(tx.connect({ flags::bip66_rule }, 0) == error::op_check_multisig_parse_signature, name);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(script__multisig__soft_errors__push_false)
+{
+    for (const auto& test: valid_soft_error_multisig_scripts)
+    {
+        const auto tx = test_tx(test);
+        const auto name = test_name(test);
+
+        BOOST_REQUIRE_MESSAGE(tx.is_valid(), name);
+        BOOST_CHECK_MESSAGE(tx.connect({ flags::no_rules }, 0) == error::stack_false, name);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(script__checksigverify__empty_key_without_bip342__empty_endorsement)
+{
+    const script_test test
+    {
+        "",
+        "0 0 checksigverify",
+        "empty legacy checksigverify key is not a tapscript empty-key error"
+    };
+    const auto tx = test_tx(test);
+    const auto name = test_name(test);
+    BOOST_REQUIRE_MESSAGE(tx.is_valid(), name);
+
+    BOOST_CHECK_MESSAGE(tx.connect({ flags::no_rules }, 0) == error::op_check_sig_verify2, name);
+    BOOST_CHECK_MESSAGE(tx.connect({ all_but_taproot }, 0) == error::op_check_sig_verify2, name);
+}
+
 BOOST_AUTO_TEST_CASE(script__context_free__valid)
 {
     for (const auto& test: valid_context_free_scripts)
@@ -970,7 +1010,7 @@ BOOST_AUTO_TEST_CASE(script__verify__bip143_native_p2wsh_1_tx__success)
     BOOST_REQUIRE_EQUAL(tx.connect({ flags::bip16_rule | flags::bip141_rule | flags::bip143_rule }, 0), error::script_success);
 
     // missing bip143 (code-separator treatment).
-    BOOST_REQUIRE_EQUAL(tx.connect({ flags::bip141_rule }, 1), error::op_check_sig_verify5);
+    BOOST_REQUIRE_EQUAL(tx.connect({ flags::bip141_rule }, 1), error::op_check_sig_verify4);
 
     // missing bip141 (witness not allowed).
     BOOST_REQUIRE_EQUAL(tx.connect({ flags::bip143_rule }, 1), error::unexpected_witness);
@@ -1092,7 +1132,7 @@ BOOST_AUTO_TEST_CASE(script__verify__bip143_no_find_and_delete_tx__success)
     BOOST_REQUIRE_EQUAL(tx.connect({ flags::bip16_rule | flags::bip143_rule }, 0), error::unexpected_witness);
 
     // missing bip143 (find-and-delete treatment).
-    BOOST_REQUIRE_EQUAL(tx.connect({ flags::bip16_rule | flags::bip141_rule }, 0), error::op_check_sig_verify5);
+    BOOST_REQUIRE_EQUAL(tx.connect({ flags::bip16_rule | flags::bip141_rule }, 0), error::op_check_sig_verify4);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

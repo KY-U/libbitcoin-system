@@ -93,11 +93,11 @@ DEFINE_ERROR_T_MESSAGE_MAP(op_error)
     { op_hash160, "op_hash160" },
     { op_hash256, "op_hash256" },
 
+    { op_check_sig_low_stack, "op_check_sig_low_stack" },
     { op_check_sig_verify1, "op_check_sig_verify1" },
     { op_check_sig_verify2, "op_check_sig_verify2" },
     { op_check_sig_verify3, "op_check_sig_verify3" },
     { op_check_sig_verify4, "op_check_sig_verify4" },
-    { op_check_sig_verify5, "op_check_sig_verify5" },
     { op_check_sig_empty_key, "op_check_sig_empty_key" },
     { op_check_sig_schnorr1, "op_check_sig_schnorr1" },
     { op_check_sig_schnorr2, "op_check_sig_schnorr2" },
@@ -114,8 +114,7 @@ DEFINE_ERROR_T_MESSAGE_MAP(op_error)
     { op_check_multisig_verify7, "op_check_multisig_verify7" },
     { op_check_multisig_verify8, "op_check_multisig_verify8" },
     { op_check_multisig_verify9, "op_check_multisig_verify9" },
-    { op_check_multisig_verify10, "op_check_multisig_verify10" },
-    { op_check_multisig_verify11, "op_check_multisig_verify11" },
+    { op_check_multisig_mismatch, "op_check_multisig_mismatch" },
     { op_check_multisig_parse_signature, "op_check_multisig_parse_signature" },
 
     { op_check_locktime_verify1, "op_check_locktime_verify1" },
