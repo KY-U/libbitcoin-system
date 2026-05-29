@@ -1067,10 +1067,12 @@ op_check_sig_verify() NOEXCEPT
 
     // Split endorsement into DER signature and signature hash flags.
     uint8_t sighash_flags;
-    const auto& der = state::ecdsa_split(sighash_flags, *endorsement);
-    const auto bip66 = state::is_enabled(flags::bip66_rule);
+    data_slice der{};
+    if (!state::ecdsa_split(der, sighash_flags, *endorsement))
+        return error::op_checksig_verify3;
 
     // BIP66: if DER encoding invalid script MUST fail and end.
+    const auto bip66 = state::is_enabled(flags::bip66_rule);
     ec_signature sig;
     if (!ecdsa::parse_signature(sig, der, bip66))
         return error::op_check_sig_parse_signature;

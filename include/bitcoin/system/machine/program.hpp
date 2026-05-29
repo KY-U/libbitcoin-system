@@ -168,7 +168,7 @@ protected:
         const data_chunk& endorsement) NOEXCEPT;
 
     /// Parse ecdsa endorsement into signature and signature hash flags.
-    static INLINE data_slice ecdsa_split(uint8_t& sighash_flags,
+    static INLINE bool ecdsa_split(uint8_t& sighash_flags, data_slice& der,
         const data_chunk& endorsement) NOEXCEPT;
 
     /// Signature subscripting.
